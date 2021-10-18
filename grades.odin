@@ -23,50 +23,57 @@ main :: proc() {
 Grades :: proc(input : string) -> f32 {
   syn_num := [3]int{0, 0, 0}
   com_num := 0
+  sum_num := 0
   gra : string
-  i := -1
+  l := -1
+  n := 0
   
   mix_arr :: 3
   cur_arr := 0
   for ch in input {
-    cl_num := strings.index_rune(" 0123456789", ch)
+    cl_num := strings.index_rune(" 0123456789", ch) - 1
 
     if ch == ' ' {
       cur_arr = 0
-      i = -1
+      l = -1
+      n += 1
       continue
     }
 
     cur_arr += 1
     if cur_arr <= mix_arr {
       if cl_num >= 0 {
-        i += 1
-        syn_num[i] = cl_num
-
-        if i == 0 {
-          com_num = syn_num[i]      
+        l += 1
+        syn_num[l] = cl_num
+        if cur_arr == 1 { 
+          com_num = syn_num[l]
+          //sum_num += com_num
+          fmt.println(sum_num)
         }
-        if i == 1 {
+        if cur_arr == 2 { 
           com_num = (syn_num[0] * 10) + syn_num[1]
+          //sum_num += com_num
+          fmt.println(sum_num)
         }
-        if i == 2 {
+        if cur_arr == 3 { 
           com_num = (syn_num[0] * 10 * 10) + (syn_num[1] * 10) + syn_num[2]
+          //sum_num += com_num
+          fmt.println(sum_num)
         }
+        sum_num += com_num
       }
     } else {
       fmt.println("3자리수 까지 입력 가능합니다")
       break
     }
-    if cl_num == '\n'{
-      fmt.println("ehla")
-    }
+    
+    if cl_num == '\n'{ fmt.println("ehla") }
     if cl_num < 0 {
       fmt.println("숫자가 아닙니다")
       break
     }
-    
-    if com_num >= 50 {
 
+    if com_num >= 50 {
       switch {
         case com_num >= 90 : gra = "A 학점입니다."
         
@@ -83,6 +90,8 @@ Grades :: proc(input : string) -> f32 {
     }
   }
   fmt.println(gra)
+  fmt.println(n)
+  fmt.println(sum_num)
 
   return 0
 }
